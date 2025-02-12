@@ -1,43 +1,34 @@
-import { Produto as ProdutoType } from '../App'
-import Produto from '../components/Produto'
-
-import * as S from './styles'
+import { Produto } from '../App';
+import ProdutoComponent from '../components/Produto';
+import * as S from './styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { toggleFavorite } from '../store/favoriteSlice';
+import { addToCart } from '../store/cartSlice';
 
 type Props = {
-  produtos: ProdutoType[]
-  favoritos: ProdutoType[]
-  adicionarAoCarrinho: (produto: ProdutoType) => void
-  favoritar: (produto: ProdutoType) => void
-}
+  produtos: Produto[]; // ← Apenas esta prop é necessária agora
+};
 
-const ProdutosComponent = ({
-  produtos,
-  favoritos,
-  adicionarAoCarrinho,
-  favoritar
-}: Props) => {
-  const produtoEstaNosFavoritos = (produto: ProdutoType) => {
-    const produtoId = produto.id
-    const IdsDosFavoritos = favoritos.map((f) => f.id)
+const Produtos = ({ produtos }: Props) => {
+  const dispatch = useDispatch();
+  const favoritos = useSelector((state: RootState) => state.favorite.items);
 
-    return IdsDosFavoritos.includes(produtoId)
-  }
+  const produtoEstaNosFavoritos = (produto: Produto) => favoritos.some((f) => f.id === produto.id);
 
   return (
-    <>
-      <S.Produtos>
-        {produtos.map((produto) => (
-          <Produto
-            estaNosFavoritos={produtoEstaNosFavoritos(produto)}
-            key={produto.id}
-            produto={produto}
-            favoritar={favoritar}
-            aoComprar={adicionarAoCarrinho}
-          />
-        ))}
-      </S.Produtos>
-    </>
-  )
-}
+    <S.Produtos>
+      {produtos.map((produto) => (
+        <ProdutoComponent
+          estaNosFavoritos={produtoEstaNosFavoritos(produto)}
+          key={produto.id}
+          produto={produto}
+          favoritar={() => dispatch(toggleFavorite(produto))}
+          aoComprar={() => dispatch(addToCart(produto))}
+        />
+      ))}
+    </S.Produtos>
+  );
+};
 
-export default ProdutosComponent
+export default Produtos;

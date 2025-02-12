@@ -1,58 +1,34 @@
-import { useEffect, useState } from 'react'
-import Header from './components/Header'
-import Produtos from './containers/Produtos'
+import { useGetProductsQuery } from './store/apiSlice';
+import { useSelector } from 'react-redux';
+import { RootState } from './store/store';
 
-import { GlobalStyle } from './styles'
+import Header from './components/Header';
+import Produtos from './containers/Produtos';
+import { GlobalStyle } from './styles';
 
-export type Produto = {
-  id: number
-  nome: string
-  preco: number
-  imagem: string
+export interface Produto {
+  id: number;
+  nome: string;
+  preco: number;
+  imagem: string;
 }
 
 function App() {
-  const [produtos, setProdutos] = useState<Produto[]>([])
-  const [carrinho, setCarrinho] = useState<Produto[]>([])
-  const [favoritos, setFavoritos] = useState<Produto[]>([])
-
-  useEffect(() => {
-    fetch('https://fake-api-tau.vercel.app/api/ebac_sports')
-      .then((res) => res.json())
-      .then((res) => setProdutos(res))
-  }, [])
-
-  function adicionarAoCarrinho(produto: Produto) {
-    if (carrinho.find((p) => p.id === produto.id)) {
-      alert('Item já adicionado')
-    } else {
-      setCarrinho([...carrinho, produto])
-    }
-  }
-
-  function favoritar(produto: Produto) {
-    if (favoritos.find((p) => p.id === produto.id)) {
-      const favoritosSemProduto = favoritos.filter((p) => p.id !== produto.id)
-      setFavoritos(favoritosSemProduto)
-    } else {
-      setFavoritos([...favoritos, produto])
-    }
-  }
+  const { data: produtos, isLoading, error } = useGetProductsQuery();
+  const carrinho = useSelector((state: RootState) => state.cart.items);
+  const favoritos = useSelector((state: RootState) => state.favorite.items);
 
   return (
     <>
       <GlobalStyle />
       <div className="container">
-        <Header favoritos={favoritos} itensNoCarrinho={carrinho} />
-        <Produtos
-          produtos={produtos}
-          favoritos={favoritos}
-          favoritar={favoritar}
-          adicionarAoCarrinho={adicionarAoCarrinho}
-        />
+        <Header />
+        {isLoading && <p>Carregando produtos...</p>}
+        {error && <p>Erro ao carregar produtos</p>}
+        {produtos && <Produtos produtos={produtos} />}
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
