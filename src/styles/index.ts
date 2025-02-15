@@ -1,34 +1,29 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 
 export const cores = {
-  corTexto: '#121714',
-  corFundo: '#eee',
-  corPrincipal: '#0c2461',
-  corSecundaria: '#4a69bd',
-};
+  corPrincipal: '#0C2461',
+  corSecundaria: '#4A69BD',
+  corFundo: '#f5f5f5',
+  corTexto: '#333'
+}
 
 export const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
-    list-style: none;
     box-sizing: border-box;
-    font-family: Roboto, sans-serif;
-    color: ${cores.corTexto}
+    font-family: 'Roboto', sans-serif;
   }
 
   body {
     background-color: ${cores.corFundo};
-    padding-bottom: 80px;
+    padding-top: 80px;
   }
 
   .container {
     max-width: 1024px;
     width: 100%;
     margin: 0 auto;
-
-    @media (max-width: 1024px) {
-      max-width: 80%;
-    }
+    padding: 0 16px;
   }
-`;
+`
