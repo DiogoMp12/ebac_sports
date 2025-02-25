@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
-import { useGetProductsQuery } from './store/apiSlice'
-import Header from './components/Header'
-import Produtos from './containers/Produtos'
-import { GlobalStyle } from './styles'
+import { useEffect } from 'react';
+import { useGetProductsQuery } from './store/apiSlice';
+import Header from './components/Header';
+import Produtos from './containers/Produtos';
+import { GlobalStyle } from './styles';
 
 function App() {
-  const { data: produtos, isLoading, error } = useGetProductsQuery()
+  const { data: produtos, isLoading, error } = useGetProductsQuery();
 
   return (
     <>
@@ -17,7 +17,7 @@ function App() {
         {produtos && <Produtos produtos={produtos} />}
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,11 +1,11 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components';
 
 export const cores = {
   corPrincipal: '#0C2461',
   corSecundaria: '#4A69BD',
   corFundo: '#f5f5f5',
-  corTexto: '#333'
-}
+  corTexto: '#333',
+};
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -26,4 +26,4 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
     padding: 0 16px;
   }
-`
+`;
